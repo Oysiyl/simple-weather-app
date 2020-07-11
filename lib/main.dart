@@ -20,16 +20,30 @@ Future<Album> fetchAlbum() async {
   }
 }
 
+class PredictTemperature {
+  final Map<String, dynamic> oneday;
+  final Map<String, dynamic> sevendays;
+  final Map<String, dynamic> tendays;
+
+  PredictTemperature({this.oneday, this.sevendays, this.tendays});
+  factory PredictTemperature.fromJson(Map<String, dynamic> json){
+    return PredictTemperature(
+        oneday: json['1_day'],
+        sevendays: json['7_days'],
+        tendays: json['10_days'],
+    );
+  }
+}
+
 class Album {
   final String city;
   final String country;
   final String ip;
-
   final String temperature;
   final String success;
   final String today;
-
-  Album({this.city, this.country, this.ip, this.temperature, this.success, this.today});
+  PredictTemperature predicttemperature;
+  Album({this.city, this.country, this.ip, this.temperature, this.success, this.today, this.predicttemperature});
 
   factory Album.fromJson(Map<String, dynamic> json) {
     return Album(
@@ -38,7 +52,8 @@ class Album {
       ip: json['ip'],
       temperature: json['temperature'].toString(),
       success: json['success'].toString(),
-      today: json['today']
+      today: json['today'],
+      predicttemperature: PredictTemperature.fromJson(json['predict_temp']),
     );
   }
 }
@@ -78,6 +93,9 @@ class _MyAppState extends State<MyApp> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
 //                return Text(snapshot.data.ip);
+                var _results = {'one day': snapshot.data.predicttemperature.oneday,
+                                'seven days': snapshot.data.predicttemperature.sevendays,
+                                'ten days': snapshot.data.predicttemperature.tendays};
                 return Center(
                   child: Column(
                     children: <Widget>[
@@ -87,26 +105,26 @@ class _MyAppState extends State<MyApp> {
                       Text(snapshot.data.today),
                       Text(snapshot.data.temperature),
 //                      Text(snapshot.data.success),
+                      Container(height: 400, width: 200, child: ListView.builder(
+                        itemCount: _results.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          String key = _results.keys.elementAt(index);
+                          return new Column(
+                            children: <Widget>[
+                              new ListTile(
+                                title: new Text("$key"),
+                                subtitle: new Text("${_results[key]}"),
+                              ),
+                              new Divider(
+                                height: 2.0,
+                              ),
+                            ],
+                          );
+                        },
+                      ))
                       ],
                 )
                 );
-//                return new ListView.builder(
-//                  itemCount: values.length,
-//                  itemBuilder: (BuildContext context, int index) {
-//                    String key = values.keys.elementAt(index);
-//                    return new Column(
-//                      children: <Widget>[
-//                        new ListTile(
-//                          title: new Text("$key"),
-//                          subtitle: new Text("${values[key]}"),
-//                        ),
-//                        new Divider(
-//                          height: 2.0,
-//                        ),
-//                      ],
-//                    );
-//                  },
-//                );
               } else if (snapshot.hasError) {
                 return Text("${snapshot.error}");
               }
