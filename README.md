@@ -1,16 +1,17 @@
 # simpleweatherapp
 
-A new Flutter application.
+Show temperature at your location as well your city, country and which day is today
 
-## Getting Started
+![Example](src/images/example.png)
 
-This project is a starting point for a Flutter application.
+It's frontend part. For backend, please, go [here](https://github.com/Oysiyl/Weather_app)
 
-A few resources to get you started if this is your first Flutter project:
+App is available through Google Play Market, Snapcraft and as a web application
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+[![Get it on Google Play](src/images/resized_google_play_black.png)](https://play.google.com/store/apps/details?id=com.bloc.simpleweatherapp)
+[![Get it from the Snap Store](src/images/snap-store-black.svg)](https://snapcraft.io/simple-weather-app)
+[![Built with Firebase](src/images/resized_firebase_black.png)](https://engaged-kite-274510.firebaseapp.com/#/)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note: for web app you need to open URL in browser without CORS.
+
+For example, on Linux run from shell: google-chrome  --user-data-dir=/tmp --disable-web-security

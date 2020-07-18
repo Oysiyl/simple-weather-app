@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Simple Weather App
+Comment=Show temperature at your location as well your city, country and which day is today
+Icon=${SNAP}/meta/gui/simple_weather_app.png
+Exec=simple-weather-app %U
+Terminal=false
+Type=Application
+Categories=Utilities;
+Keywords=Flutter;Weather;
+StartupNotify=false

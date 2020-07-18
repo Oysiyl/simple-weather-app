@@ -41,3 +41,11 @@ app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Firebase configs
+.firebaserc
+firebase.json
+.firebase
+
+# Related to snap
+*.snap
