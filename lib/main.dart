@@ -4,19 +4,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<Album> fetchAlbum() async {
+Future<Weather> fetchWeather() async {
   final response =
   await http.post('https://prediction-weather-app.herokuapp.com/predict/');
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    return Album.fromJson(json.decode(response.body));
+    return Weather.fromJson(json.decode(response.body));
 //    return json.decode(response.body);
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load response. Please, try again in a few sec');
   }
 }
 
@@ -35,7 +35,7 @@ class PredictTemperature {
   }
 }
 
-class Album {
+class Weather {
   final String city;
   final String country;
   final String ip;
@@ -43,10 +43,11 @@ class Album {
   final String success;
   final String today;
   PredictTemperature predicttemperature;
-  Album({this.city, this.country, this.ip, this.temperature, this.success, this.today, this.predicttemperature});
+  Weather({this.city, this.country, this.ip, this.temperature,
+           this.success, this.today, this.predicttemperature});
 
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
+  factory Weather.fromJson(Map<String, dynamic> json) {
+    return Weather(
       city: json['city'],
       country: json['country'],
       ip: json['ip'],
@@ -68,28 +69,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Future<Album> futureAlbum;
+  Future<Weather> futureWeather;
 
   @override
   void initState() {
     super.initState();
-    futureAlbum = fetchAlbum();
+    futureWeather = fetchWeather();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fetch Data Example',
+      title: 'Weather Info',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Fetch Data Example'),
+          title: Text('Weather Info'),
         ),
         body: Center(
-          child: FutureBuilder<Album>(
-            future: futureAlbum,
+          child: FutureBuilder<Weather>(
+            future: futureWeather,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
 //                return Text(snapshot.data.ip);
