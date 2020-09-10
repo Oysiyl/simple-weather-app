@@ -1,0 +1,83 @@
+Install Flutter:
+wget https://storage.googleapis.com/flutter_infra/releases/stable/linux/flutter_linux_1.17.0-stable.tar.xz
+tar xf flutter_linux_1.17.0-stable.tar.xz
+If one fresh system add this:
+echo 'export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin:/usr/games:/sbin' >> ~/.bashrc && source ~/.bashrc
+echo 'export PATH=/home/dmitriy/flutter/bin:$PATH' >> ~/.bashrc && source ~/.bashrc
+kvm(https://medium.com/@Abdelkrim/install-flutter-on-ubuntu-20-04-lts-focal-fossa-65ca0f86e02e):
+https://help.ubuntu.com/community/KVM/Installation
+sudo apt-get install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils virt-manager
+sudo adduser `id -un` libvirt
+sudo adduser `id -un` kvm
+Install not Google Play API image but Google APIs! Intel Atom image or KVM will not worked and adb root too!
+install dart flutter plugins in androidstudio
+in settings-languages-enable dart - install dart, set up also path to dart sdk, check project
+
+Enable web:
+flutter channel beta
+flutter upgrade
+flutter config --enable-web, enable-linux-desktop, enable-macos-desktop, enable-windows-desktop
+Download Flutter and Dart plugins for IDE, accept licenses:
+flutter doctor --accept-licenses
+sudo apt-get install adb
+if problem with adb: https://stackoverflow.com/a/40991118/9461974
+prep for deploy (https://instabug.com/blog/how-to-release-your-flutter-app-for-ios-and-android/)
+Create keystore(without validity = "You key expire too soon, please update the key"):
+keytool -genkey -alias replserver -keyalg RSA -keystore keystore.jks -dname "CN=Dmitriy Kisil, OU=None, O=None, L=Kharkiv, S=KH, C=UA" -storepass password -keypass password -deststoretype pkcs12 -validity 10000
+nano /android/key.properties
+Fill with:
+storePassword=password
+keyPassword=password
+keyAlias=replserver
+storeFile=/home/dmitriy/keystore.jks
+For create a hi-res icon:
+https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
+For create a feature graphic:
+https://www.norio.be/graphic-generator/
+API SDK at least 28, com.example in application ID is not allowed, validity when create an keystore
+Be sure that you have android emulator with at least 320 px by smaller side and smaller than 2:1 ratio!
+Otherwise you would have error and can not submit screenshots for publishing an app
+For publishing you would need 2 screenshots, 1 feature graphic, 1 hi-res icon
+You can't publish simple apk, need to create Android Apk Bundle:
+Select emulator device - Run - Build - Flutter - Build App Bundle
+or flutter build appbundle --target-platform android-arm,android-arm64,android-x64
+Path to apk: build/app/outputs/bundle/release/app-release.aab
+Pricing & Distribution click available on countries and two click after that
+Content Rating fill questionnaire, calculate rating for questionnaire
+If you have previous apk (error version the same) - remove it from release - remove from artifact library - try again
+When rollout a new version of the app change versionCode and versionName in build.gradle:
+https://stackoverflow.com/questions/24772407/upload-failed-you-need-to-use-a-different-version-code-for-your-apk-because-you
+defaultConfig {
+    applicationId "com.my.packageId"
+    minSdkVersion 15
+    targetSdkVersion 22
+    versionCode 2      <-- change this
+    versionName "2.0"  <-- change this
+}
+gcloud init Create a new configuration for flutter named [flutter]
+if you struggle with XMLHttpRequestError(this is because of CORS enabled), do this:
+on Linux run from shell: google-chrome  --user-data-dir=/tmp --disable-web-security
+go to http://localhost:8000/build/web/#/
+Link: https://stackoverflow.com/a/52324958/9461974
+How to deploy app to Firebase:
+https://blog.solutelabs.com/flutter-for-web-how-to-deploy-a-flutter-web-app-c7d9db7ced2e
+flutter build web
+firebase deploy
+URLs to website:
+engaged-kite-274510.web.app
+engaged-kite-274510.firebaseapp.com
+Mobile:
+flutter build appbundle
+Linux:
+sudo apt-get install clang cmake ninja-build pkg-config libgtk-3-dev
+flutter config --enable-linux-desktop
+flutter create --org simpleweatherapp .
+snapcraft
+If CMake path error remove CMakeCache.txt from build/linux/release/ and change source from . to build and back, command is name of project dir
+snapcraft login
+snapcraft register simple-weather-app
+snapcraft push --release=edge simple-weather-app_2.0.1_amd64.snap
+sudo snap install simple-weather-app --edge
+https://snapcraft.io/simple-weather-app
+If run Linux desktop and have Exception: Build process failed run flutter run -v -d linux and if
+https://github.com/flutter/flutter/issues/59645 use flutter clean

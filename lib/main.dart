@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 Future<Weather> fetchWeather() async {
   final response =
-  await http.post('https://prediction-weather-app.herokuapp.com/predict/');
+  await http.post('https://weather-app-288315.uc.r.appspot.com/predict/');
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
