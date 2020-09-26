@@ -43,8 +43,9 @@ class Weather {
   final String success;
   final String today;
   PredictTemperature predicttemperature;
+  final Map<String, dynamic> hourtemp;
   Weather({this.city, this.country, this.ip, this.temperature,
-           this.success, this.today, this.predicttemperature});
+           this.success, this.today, this.predicttemperature, this.hourtemp});
 
   factory Weather.fromJson(Map<String, dynamic> json) {
     return Weather(
@@ -54,6 +55,7 @@ class Weather {
       temperature: json['temperature'].toString(),
       success: json['success'].toString(),
       today: json['today'],
+      hourtemp: json['hour_temp'],
       predicttemperature: PredictTemperature.fromJson(json['predict_temp']),
     );
   }
@@ -96,7 +98,8 @@ class _MyAppState extends State<MyApp> {
 //                return Text(snapshot.data.ip);
                 var _results = {'one day': snapshot.data.predicttemperature.oneday,
                                 'seven days': snapshot.data.predicttemperature.sevendays,
-                                'ten days': snapshot.data.predicttemperature.tendays};
+                                'ten days': snapshot.data.predicttemperature.tendays,
+                                'hour temp': snapshot.data.hourtemp};
                 return Center(
                   child: Column(
                     children: <Widget>[
